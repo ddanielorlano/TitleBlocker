@@ -38,7 +38,12 @@ function loadDropdown(firstLoad, visibleDropdown) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    loadDropdown(true, document.getElementById('dropdown'));
+    var firstTime = false;
+    if (document.getElementById('dropdown-hidden').options.length <= 0) {
+        firstTime = true;
+    }
+
+    loadDropdown(firstTime, document.getElementById('dropdown'));
 
     var applyBtn = document.getElementById('apply-btn');
     applyBtn.onclick = function () {
@@ -50,10 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('reload-btn').onclick = function () {
         var originalTabs = document.getElementById('dropdown-hidden').options;
-        chrome.tabs.query({ lastFocusedWindow: true}, function (tabs) {
+        chrome.tabs.query({ lastFocusedWindow: true }, function (tabs) {
             tabs.forEach(function (tab) {
                 var matched;
-                for(var i =0; i < originalTabs.length; i++){
+                for (var i = 0; i < originalTabs.length; i++) {
                     if (originalTabs[i].value == tab.id) {
                         matched = originalTabs[i];
                     }
@@ -63,6 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         });
-       // reloadDropdown();
+        // reloadDropdown();
     }
 });
