@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
@@ -6,24 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Title Blocker</title>
-    <script src="popup.js"></script>
 
-    <script src="js/jquery-2.0.3.min.js"></script>
+    <!--<script src="js/jquery-2.0.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/custom.css" rel="stylesheet" media="screen">-->
+    <script src="bootstrap/js/jquery-3.2.1.min.js"></script>
+    <script src="popup.js"></script>
+    <script src="bootstrap/js/popper-1.12.9.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/custom.css" rel="stylesheet" media="screen">
-
-    <!--<style>
-        select#dropdown {
-            font-size: 13px;
-        }
-    </style>-->
 </head>
 <body>
     <div class="container" id="container">
         <h4>Title Blocker</h4>
-        <form>
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <div class="well" id="tabs">
+                </div>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+
+
+
+        <!--<form>
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group">
@@ -49,7 +58,7 @@
                 <button class="btn btn-sm" id="reload-btn">Reload All Tabs</button>
             </div>
             <div class="col-sm-4"></div>
-        </div>
+        </div>-->
     </div>
 </body>
 </html>

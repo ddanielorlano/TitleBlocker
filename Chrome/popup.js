@@ -1,5 +1,4 @@
 
-
 function changeTabTitle(optionIndex, tabId, title, reload) {
     if (!title) { return; }
     var code = "document.title = " + "'" + title + "'";
@@ -16,58 +15,42 @@ function reloadDropdown() {
     dropdown.options.length = 0;
     loadDropdown(false, dropdown);
 }
-function loadDropdown(firstLoad, visibleDropdown) {
-    d = document.getElementById('dropdown');
-    var hiddenDropdown = document.getElementById('dropdown-hidden');
+
+function loadTabs() {
+
+    var $tabs = $("#tabs");
+
     chrome.tabs.query({ lastFocusedWindow: true }, function (tabs) {
         tabs.forEach(function (tab) {
             console.log(tab.title + " id: " + tab.id);
-            var opt = document.createElement('option');
-            opt.innerHTML = tab.title;
-            opt.value = tab.id;
-            d.appendChild(opt);
-            if (firstLoad) {
-                var newOpt = document.createElement('option');
-                newOpt.innerHTML = tab.title;
-                newOpt.value = tab.id;
-                hiddenDropdown.appendChild(newOpt);
-            }
+            $tabs.append(generateHtml(tab.id, tab.title));
+
         });
     });
 }
+function generateHtml(id, title) {
+    var $html = "<div id = \"" +id+ "\">" + "<small class=\"titleText\">" + title
+        + "</small><div class=\"input-group input-group-sm mb-3\">"
+        + "<div class=\"input-group-prepend\">"
+        + "<button class=\"btn btn-outline-secondary\" id=\"changBtn"+id+"\" data-tabid=\"" + id + "\" type=\"button\">Change</button></div>"
+        + "<input type=\"text\" class=\"form-control\""+ "id=\"\input-" + id + "\">";
+    return $html;
+}
+$(document).ready(function () {
 
-document.addEventListener('DOMContentLoaded', () => {
+    loadTabs();
+    $('#tabs').on('click', '.btn', function (btn) {
 
-    var firstTime = false;
-    if (document.getElementById('dropdown-hidden').options.length <= 0) {
-        firstTime = true;
-    }
+        var id = $(this).data('tabid');
+        var title = $(this).parent().next('input').val();
+        if (!title) return;
 
-    loadDropdown(firstTime, document.getElementById('dropdown'));
-
-    var applyBtn = document.getElementById('apply-btn');
-    applyBtn.onclick = function () {
-        var dropdown = document.getElementById('dropdown');
-        var input = document.getElementById('titleInput');
-        var selected = dropdown.options[dropdown.selectedIndex];
-        changeTabTitle(dropdown.selectedIndex, selected.value, input.value, true);
-    };
-
-    document.getElementById('reload-btn').onclick = function () {
-        var originalTabs = document.getElementById('dropdown-hidden').options;
-        chrome.tabs.query({ lastFocusedWindow: true }, function (tabs) {
-            tabs.forEach(function (tab) {
-                var matched;
-                for (var i = 0; i < originalTabs.length; i++) {
-                    if (originalTabs[i].value == tab.id) {
-                        matched = originalTabs[i];
-                    }
-                }
-                if (matched) {
-                    changeTabTitle(matched.index, tab.id, matched.text, true)
-                }
-            });
-        });
-        // reloadDropdown();
-    }
+        var titleText = $(this).parents().children('.titleText');
+        var oldTitle = titleText.html();
+        titleText.html(title);
+        var code = "document.title = " + "'" + title + "'";
+        chrome.tabs.executeScript(parseInt(id), { code: code });
+    });
 });
+
+
