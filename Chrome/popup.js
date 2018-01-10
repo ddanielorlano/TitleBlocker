@@ -29,11 +29,11 @@ function loadTabs() {
     });
 }
 function generateHtml(id, title) {
-    var $html = "<div id = \"" +id+ "\">" + "<small class=\"titleText\">" + title
+    var $html = "<div id = \"" + id + "\">" + "<small class=\"titleText\">" + title
         + "</small><div class=\"input-group input-group-sm mb-3\">"
         + "<div class=\"input-group-prepend\">"
-        + "<button class=\"btn btn-outline-secondary\" id=\"changBtn"+id+"\" data-tabid=\"" + id + "\" type=\"button\">Change</button></div>"
-        + "<input type=\"text\" class=\"form-control\""+ "id=\"\input-" + id + "\">";
+        + "<button class=\"btn btn-outline-secondary\" id=\"changBtn" + id + "\" data-tabid=\"" + id + "\" type=\"button\">Change</button></div>"
+        + "<input type=\"text\" class=\"form-control\"" + "id=\"\input-" + id + "\">";
     return $html;
 }
 $(document).ready(function () {
@@ -50,6 +50,14 @@ $(document).ready(function () {
         titleText.html(title);
         var code = "document.title = " + "'" + title + "'";
         chrome.tabs.executeScript(parseInt(id), { code: code });
+    });
+
+    $('div .toggleImagesDiv').on('click', '#toggleImagesBtn', function () {
+        var current = $(this);
+        chrome.tabs.query({ currentWindow: true, active: true }, function (tabArray) {
+            chrome.tabs.insertCSS(tabArray[0].id, { code: "img { display: none; }" });
+        });
+        
     });
 });
 
